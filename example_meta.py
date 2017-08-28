@@ -3,52 +3,39 @@
 
 box_list = {}
 
-class BoxMetaClass(type):
-    def __new__(mcs, name, bases, dict):
-        cls = type.__new__(mcs, name, bases, dict)
-        if cls.box_type:
-            box_list[cls.box_type] = cls
+class Box(type):
+    def __new__(mcs, name, bases, ns, *, box_type):
+        cls = type.__new__(mcs, name, bases, ns)
+        if box_type:
+            box_list[box_type] = cls
+            cls.box_type = box_type
         return cls
 
     #def __init__(cls, name, bases, dct):
     #    super(BoxMetaClass, cls).__init__(name, bases, dct)
+    # Required
+    def __init__(self, name, bases, ns, *, box_type):
+        super().__init__(name, bases, ns)
 
     def __str__(self):
         print('__str__')
         return super().__str__()
 
-class Box(object, metaclass=BoxMetaClass):
-    box_type = None
+class FullBox(Box):
+    pass
 
-    def __init__(self, size=None):
-        self.size = size
-        self.body = []
+class Sub1Box(metaclass=Box, box_type='sub1'):
+    def __init__(self):
+        print(self.__class__.box_type)
 
-    def __str__(self):
-        
-        rep = self.__class__.box_type +'(' + self.size + ')'
-        return rep
+class Sub1SubBox(Sub1Box, box_type='sb1s'):
+    pass
 
-    def def_element(self, element):
-        self.body.append(element)
+class Sub2Box(metaclass=FullBox, box_type='sub2'):
+    pass
 
-class Element():
-    def __init__(self, name, element_type, element_size):
-        self.name = name
-        self.element_type = element_type
-        self.element_type = element_type
-
-class Sub1Box(Box):
-    box_type = 'sub1'
-
-class Sub1SubBox(Sub1Box):
-    box_type = 'sb1s'
-
-class Sub2Box(Box):
-    box_type = 'sub2'
-
-class Sub2SubBox(Sub2Box):
-    box_type = 'sb2s'
+class Sub2SubBox(Sub2Box, box_type='sb2s'):
+    pass
 
 if __name__ == "__main__":
     print(box_list)
