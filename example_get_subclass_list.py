@@ -21,15 +21,15 @@ class F(C):
 class G(C):
     pass
 
-def get_class_list(cls, res=[]):
+def get_subclass_list(cls, res=[]):
     subclasses = getattr(cls, '__subclasses__')()
     for subclass in subclasses:
-        get_class_list(subclass, res)
+        get_subclass_list(subclass, res)
     res.append(cls)
     return res
 
 if __name__ == "__main__":
-    res = get_class_list(A)
+    res = get_subclass_list(A)
     for cls in res:
         print(cls.__name__)
         print(type(cls.__base__))
