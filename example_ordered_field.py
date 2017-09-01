@@ -29,22 +29,13 @@ class Base(metaclass=OrderedFieldMeta):
     b = SubField()
     c = SubField()
 
-    @classmethod
-    def get_class_tree(cls, target):
-        tree = []
-        while target != cls:
-            tree.insert(0, target)
-            target = target.__base__
-        return tree
-
     def read_field(self, file):
         for name, field in self.fields.items():
             field.read(name)
 
     def read(self, file):
         self.read_field(file)
-        tree = Base.get_class_tree(SubSub)
-        for cls in tree:
+        for cls in get_class_tree(Base, SubSub):
             self.__class__ = cls
             self.read_field(file)        
 
@@ -59,16 +50,25 @@ class SubSub(Sub):
     i = SubField()
 
 
-def get_class_tree(cls):
+def get_class_tree(base, target):
     tree=[]
-    while cls != Base:
-        tree.insert(0, cls)
-        cls = cls.__base__
+    while target != base:
+        tree.insert(0, target)
+        target = target.__base__
     return tree
+
+def get_class_tree_yeild(base, target):
+    while target != base:
+        yield target
+        target = target.__base__
+
 
 if __name__ == "__main__":
     #print(BaseOrderiedField.__ordered__)
 
-    field = Base()
-    field.read('hoge')
+    a = Base()
+    a.read('hoge')
+
+    b = Base()
+    b.read('hoge')
     #print(OrderiedField.__ordered__)
