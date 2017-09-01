@@ -7,15 +7,21 @@ https://learko.github.io/books/coding/Python_Cookbook_3rd_Edition.pdf
 # Base class. Uses a descriptor to set a value
 class Descriptor:
     def __init__(self, name=None, **opts):
-        print('Descriptor.__init__')
+        #print('Descriptor.__init__')
         self.name = name
         for key, value in opts.items():
             setattr(self, key, value)
 
     def __set__(self, instance, value):
-        print('Descriptor.__set__')
+        #print('Descriptor.__set__')
+        print('----')
+        print(self)
+        print(self.name)
+        print(instance)
+        print(value)
         instance.__dict__[self.name] = value
         print(instance.__dict__)
+        print('----')
 
 # Descriptor for enforcing types
 class Typed(Descriptor):
@@ -65,11 +71,13 @@ class SizedString(String, MaxSized):
 
 class Stock:
     # Specify constraints
-    name = SizedString('name',size=8)
-    shares = UnsignedInteger('shares')
+    #name = SizedString('name',size=8)
+    #shares = UnsignedInteger('shares')
     price = UnsignedFloat('price')
+    hoge = UnsignedFloat('hoge')
+    
     def __init__(self, name, shares, price):
-        print('Stock.__init__')        
+        #print('Stock.__init__')        
         self.name = name
         self.shares = shares
         self.price = price
@@ -115,8 +123,14 @@ class Stock3(metaclass=checkedmeta):
         self.price = price
 # Example
 if __name__ == '__main__':
-    s = Stock('ACME', 50, 91.1)
-    print(s.name)
+    a = Stock('ACME', 50, 91.1)
+    #print(a.name)
+    #b = Stock('AAPL', 100, 110.0)
+    #print(a.__dict__)
+    #print(a.hoge)
+    a.hoge = 100.0
+    print(a.price)
+    print(a.hoge)
     #s.shares = -10
     #s.price = 'a lot'
-    s.name = 'ABRACADABRA'
+    #s.name = 'ABRACADABRA'
