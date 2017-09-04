@@ -8,8 +8,9 @@ class Descriptor:
         for key, value in opts.items():
             setattr(self, key, value)
 
-    def __get__(self, instance, type=None):
+    def __get__(self, instance, owner):
         print(instance)
+        print(owner)
         return self.value
 
     def __set__(self, instance, value):
@@ -32,8 +33,7 @@ class Test(metaclass=checkedmeta):
     b = Descriptor()
 
     def read(self):
-        self.a.read()
-        self.b.read()
+        print(self.a)
 
 
 if __name__ == "__main__":
