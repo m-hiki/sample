@@ -35,13 +35,13 @@ def defbox(extend):
     return _defbox
 
 @defbox(extend=None)
-def box(boxtype):
+def box(boxtype=None):
     size = Int(32)
     typ = String(32)
     yield size
     yield typ
 
-@defbox(extend=box(None))
+@defbox(extend=box())
 def full_box():
     version = Int(8)
     flags = Int(24)
@@ -62,5 +62,5 @@ def movie_box():
     pass
 
 if __name__ == '__main__':
-    for field in full_box():
+    for field in box():
         field.read('hoge')
