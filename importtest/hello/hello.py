@@ -1,5 +1,5 @@
 
-import foo
+from . import foo
 
 
 def hello():
