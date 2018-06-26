@@ -1,22 +1,19 @@
 
-def fibonacci():
+def fibonacci_loop():
     x, y = 0, 1
     while True:
         yield x
         x, y = y, y + x
 
 
-def fibonacci2():
-    x, y = 0, 1
-    yield from map(lambda: y + x, range(100))
+def fibonacci(n):
+    if n == 0:
+        return 0
+    elif n == 1:
+        return 1
+    else:
+        return fibonacci(n - 2) + fibonacci(n - 1)
 
 
 if __name__ == "__main__":
-    f = fibonacci()
-    n = 0
-    n_1 = n
-    for v in range(100):
-        n = f.__next__()
-        r = n/n_1 if n_1 != 0 else 0
-        print('{0} {1}'.format(n, r))
-        n_1 = n
+    print(fibonacci(30))
